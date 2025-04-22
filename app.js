@@ -1,3 +1,4 @@
+// Initialize localStorage if not present
 if (!localStorage.getItem("user")) {
   localStorage.setItem("user", JSON.stringify({}));
 }
@@ -100,7 +101,7 @@ function showMain() {
 
 function showSection(section) {
   console.log(`Showing section: ${section}`);
-  ["profile", "dashboard", "workouts", "goals"].forEach((s) => {
+  ["profile", "dashboard", "workouts", "goals", "contact"].forEach((s) => {
     const sectionEl = document.getElementById(`${s}-section`);
     if (sectionEl) sectionEl.classList.add("hidden");
   });
@@ -193,30 +194,66 @@ function getBMICategory(bmi) {
 // Workout Management
 let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
 
+function toggleCustomWorkout() {
+  const workoutType = document.getElementById("workout-type").value;
+  const customInput = document.getElementById("custom-workout");
+  if (workoutType === "custom") {
+    customInput.classList.remove("hidden");
+    customInput.focus();
+  } else {
+    customInput.classList.add("hidden");
+    customInput.value = "";
+  }
+}
+
 function addWorkout() {
-  const type = document.getElementById("workout-type").value;
+  let type = document.getElementById("workout-type").value;
+  const customType = document.getElementById("custom-workout").value;
+  const category = document.getElementById("workout-category").value;
   const duration = parseInt(document.getElementById("workout-duration").value);
   const calories = parseInt(document.getElementById("workout-calories").value);
-  if (type && duration && calories) {
+  const sets = parseInt(document.getElementById("workout-sets").value);
+
+  // Use custom workout type if selected and provided, otherwise use dropdown value
+  if (type === "custom" && customType.trim()) {
+    type = customType.trim();
+  }
+
+  if (
+    type &&
+    type !== "custom" &&
+    category &&
+    duration > 0 &&
+    calories > 0 &&
+    sets >= 0
+  ) {
     const workout = {
       type,
+      category,
       duration,
       calories,
+      sets,
       date: new Date().toLocaleString(),
     };
     workouts.push(workout);
     try {
       localStorage.setItem("workouts", JSON.stringify(workouts));
       document.getElementById("workout-type").value = "";
+      document.getElementById("custom-workout").value = "";
+      document.getElementById("custom-workout").classList.add("hidden");
+      document.getElementById("workout-category").value = "Strength";
       document.getElementById("workout-duration").value = "";
       document.getElementById("workout-calories").value = "";
+      document.getElementById("workout-sets").value = "";
       loadWorkouts();
     } catch (e) {
       alert("Error saving workout. Please try again.");
       console.error(e);
     }
   } else {
-    alert("Please fill in all workout fields.");
+    alert(
+      "Please fill in all fields with valid values. For custom exercises, enter a valid exercise name."
+    );
   }
 }
 
@@ -231,7 +268,7 @@ function loadWorkouts() {
     li.className =
       "border-b border-gray-600 py-3 flex justify-between items-center text-gray-300";
     li.innerHTML = `
-                    <span>${workout.type} - ${workout.duration} min, ${workout.calories} cal (${workout.date})</span>
+                    <span>${workout.type} (${workout.category}) - ${workout.duration} min, ${workout.calories} cal, ${workout.sets} sets (${workout.date})</span>
                     <button onclick="deleteWorkout(${index})" class="text-red-400 hover:text-red-500 transition">Delete</button>
                 `;
     workoutList.appendChild(li);
@@ -265,15 +302,6 @@ let dailyStats = JSON.parse(localStorage.getItem("dailyStats")) || {
 };
 
 function loadDailyStats() {
-  const today = new Date().toDateString();
-  if (dailyStats.lastReset !== today) {
-    dailyStats = { steps: 0, water: 0, calorieIntake: 0, lastReset: today };
-    try {
-      localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
-    } catch (e) {
-      console.error(e);
-    }
-  }
   document.getElementById("daily-steps").textContent = dailyStats.steps;
   document.getElementById("water-intake").textContent =
     dailyStats.water + " ml";
