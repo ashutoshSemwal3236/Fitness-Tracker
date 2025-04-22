@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <div id="app" class="min-h-screen flex flex-col md:flex-row">
+        <!-- Login Screen -->
+        <div id="login-screen" class="flex-1 flex flex-col items-center justify-center auth-background">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">Fitness Tracker</h1>
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-100">Login</h2>
+                <div class="space-y-4">
+                    <input id="login-email" type="email" placeholder="Email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <input id="login-password" type="password" placeholder="Password" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold">Login</button>
+                    <p class="text-center text-gray-400">Don't have an account? <a href="#" onclick="showSignup()" class="text-blue-400 hover:underline">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Screen -->
+        <div id="signup-screen" class="hidden flex-1 flex flex-col items-center justify-center auth-background">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">Fitness Tracker</h1>
+            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
+                <h2 class="text-3xl font-bold mb-6 text-center text-gray-100">Sign Up</h2>
+                <div class="space-y-4">
+                    <input id="signup-name" type="text" placeholder="Full Name" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <input id="signup-email" type="email" placeholder="Email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <input id="signup-password" type="password" placeholder="Password" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <input id="signup-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <input id="signup-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+                    <button onclick="signup()" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold">Sign Up</button>
+                    <p class="text-center text-gray-400">Already have an account? <a href="#" onclick="showLogin()" class="text-blue-400 hover:underline">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Screen -->
+        <div id="main-screen" class="hidden flex-1 flex flex-col md:flex-row">
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-6 md:static md:translate-x-0 sidebar-hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-xl font-bold">Fitness Tracker</h1>
+                    <button onclick="toggleSidebar()" class="md:hidden text-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <ul class="space-y-2">
+                    <li><a href="#" onclick="showSection('profile')" class="block p-2 rounded hover:bg-gray-700 transition">Profile</a></li>
+                    <li><a href="#" onclick="showSection('dashboard')" class="block p-2 rounded hover:bg-gray-700 transition">Dashboard</a></li>
+                    <li><a href="#" onclick="showSection('workouts')" class="block p-2 rounded hover:bg-gray-700 transition">Workouts</a></li>
+                    <li><a href="#" onclick="showSection('goals')" class="block p-2 rounded hover:bg-gray-700 transition">Goals</a></li>
+                    <li><a href="#" onclick="logout()" class="block p-2 rounded hover:bg-red-600 transition">Logout</a></li>
+                </ul>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleSidebar()" class="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-2 rounded-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            <!-- Main Content -->
+            <main class="flex-1 p-6 bg-gray-900">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Profile Section -->
+                    <div id="profile-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Profile Details</h2>
+                        <div class="space-y-4 text-gray-300">
+                            <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                            <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                            <p><strong>Height:</strong> <span id="profile-height"></span> cm</p>
+                            <p><strong>Weight:</strong> <span id="profile-weight"></span> kg</p>
+                            <p><strong>BMI:</strong> <span id="profile-bmi"></span></p>
+                            <button onclick="editProfile()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Edit Profile</button>
+                        </div>
+                        <div id="edit-profile-form" class="hidden mt-6 space-y-4">
+                            <input id="edit-name" type="text" placeholder="Full Name" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="edit-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="edit-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button onclick="saveProfile()" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition">Save Changes</button>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="text-xl font-bold mb-4 text-gray-100">BMI Calculator</h3>
+                            <div class="space-y-4">
+                                <input id="bmi-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input id="bmi-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <button onclick="calculateBMI()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Calculate BMI</button>
+                                <p class="text-gray-300">Result: <span id="bmi-result">N/A</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Section -->
+                    <div id="dashboard-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Dashboard</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-700 p-6 rounded-lg">
+                                <h3 class="font-semibold text-gray-100 mb-2">Daily Steps</h3>
+                                <p id="daily-steps" class="text-2xl text-blue-400">0</p>
+                                <div class="progress-bar mt-2"><div id="steps-progress" class="progress-fill"></div></div>
+                                <p class="text-gray-400 mt-2">Goal Progress: <span id="steps-progress-percent">0%</span> (<span id="steps-remaining">0</span> remaining)</p>
+                                <input id="step-input" type="number" placeholder="Enter steps" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div class="flex space-x-2 mt-4">
+                                    <button onclick="logSteps()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Steps</button>
+                                    <button onclick="resetSteps()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700 p-6 rounded-lg">
+                                <h3 class="font-semibold text-gray-100 mb-2">Water Intake</h3>
+                                <p id="water-intake" class="text-2xl text-blue-400">0 ml</p>
+                                <div class="progress-bar mt-2"><div id="water-progress" class="progress-fill"></div></div>
+                                <p class="text-gray-400 mt-2">Goal Progress: <span id="water-progress-percent">0%</span> (<span id="water-remaining">0</span> ml remaining)</p>
+                                <input id="water-input" type="number" placeholder="Enter ml" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div class="flex space-x-2 mt-4">
+                                    <button onclick="logWater()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Water</button>
+                                    <button onclick="resetWater()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
+                                </div>
+                            </div>
+                            <div class="bg-gray-700 p-6 rounded-lg">
+                                <h3 class="font-semibold text-gray-100 mb-2">Calorie Intake</h3>
+                                <p id="calorie-intake" class="text-2xl text-blue-400">0 cal</p>
+                                <div class="progress-bar mt-2"><div id="calorie-intake-progress" class="progress-fill"></div></div>
+                                <p class="text-gray-400 mt-2">Goal Progress: <span id="calorie-intake-progress-percent">0%</span> (<span id="calorie-intake-remaining">0</span> cal remaining)</p>
+                                <input id="calorie-intake-input" type="number" placeholder="Enter cal" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <div class="flex space-x-2 mt-4">
+                                    <button onclick="logCalorieIntake()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Calories</button>
+                                    <button onclick="resetCalorieIntake()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-700 p-6 rounded-lg mt-6">
+                            <h3 class="font-semibold text-gray-100 mb-2">Progress Summary</h3>
+                            <p class="text-gray-300">Total Workouts: <span id="total-workouts">0</span></p>
+                            <p class="text-gray-300">Total Duration: <span id="total-duration">0</span> min</p>
+                            <p class="text-gray-300">Total Calories Burned: <span id="total-calories">0</span></p>
+                            <p class="text-gray-300 mt-2">Calorie Burn Goal Progress: <span id="calories-progress-percent">0%</span> (<span id="calories-remaining">0</span> remaining)</p>
+                        </div>
+                    </div>
+
+                    <!-- Workouts Section -->
+                    <div id="workouts-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Log Workout</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <input id="workout-type" type="text" placeholder="Workout Type (e.g., Running)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="workout-duration" type="number" placeholder="Duration (minutes)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="workout-calories" type="number" placeholder="Calories Burned" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button onclick="addWorkout()" class="mt-6 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">Add Workout</button>
+                        <h2 class="text-2xl font-bold mt-8 mb-4 text-gray-100">Workout History</h2>
+                        <ul id="workout-list" class="space-y-4"></ul>
+                    </div>
+
+                    <!-- Goals Section -->
+                    <div id="goals-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Fitness Goals</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="font-semibold text-gray-100">Step Goal (steps/day):</label>
+                                <input id="step-goal" type="number" placeholder="e.g., 10000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-100">Water Goal (ml/day):</label>
+                                <input id="water-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-100">Calorie Intake Goal (cal/day):</label>
+                                <input id="calorie-intake-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
+                            </div>
+                            <div>
+                                <label class="font-semibold text-gray-100">Calorie Burn Goal (cal/week):</label>
+                                <input id="calorie-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
+                            </div>
+                            <button onclick="saveGoals()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">Save Goals</button>
+                        </div>
+                        <h3 class="text-xl font-bold mt-8 mb-4 text-gray-100">Current Goals</h3>
+                        <div class="space-y-4 text-gray-300">
+                            <p>Steps: <span id="current-step-goal">0</span>/day (<span id="steps-progress-percent-goal">0%</span>, <span id="steps-remaining-goal">0</span> remaining)<div class="progress-bar mt-2"><div id="steps-goal-progress" class="progress-fill"></div></div></p>
+                            <p>Water: <span id="current-water-goal">0</span> ml/day (<span id="water-progress-percent-goal">0%</span>, <span id="water-remaining-goal">0</span> ml remaining)<div class="progress-bar mt-2"><div id="water-goal-progress" class="progress-fill"></div></div></p>
+                            <p>Calorie Intake: <span id="current-calorie-intake-goal">0</span> cal/day (<span id="calorie-intake-progress-percent-goal">0%</span>, <span id="calorie-intake-remaining-goal">0</span> cal remaining)<div class="progress-bar mt-2"><div id="calorie-intake-goal-progress" class="progress-fill"></div></div></p>
+                            <p>Calorie Burn: <span id="current-calorie-goal">0</span>/week (<span id="calories-progress-percent-goal">0%</span>, <span id="calories-remaining-goal">0</span> remaining)<div class="progress-bar mt-2"><div id="calories-goal-progress" class="progress-fill"></div></div></p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js">
+        
+        
+    </script>
+</body>
+</html>

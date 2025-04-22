@@ -1,0 +1,35 @@
+  /* Custom styles for progress bars and sidebar */
+  .progress-bar {
+      height: 8px;
+      background-color: #4b5563;
+      border-radius: 4px;
+      overflow: hidden;
+  }
+
+  .progress-fill {
+      height: 100%;
+      background-color: #60a5fa;
+      transition: width 0.3s ease-in-out;
+  }
+
+  .sidebar {
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar-hidden {
+      transform: translateX(-100%);
+  }
+
+  @media (max-width: 768px) {
+      .sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          z-index: 50;
+      }
+  }
+
+  /* Enhanced gradient for login/signup background */
+  .auth-background {
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  }
