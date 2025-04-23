@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Tracker App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
     <div id="app" class="flex flex-col min-h-screen">
@@ -79,11 +83,11 @@
                 <div id="profile-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
                     <h2 class="text-3xl font-bold mb-6 text-white">Profile Details</h2>
                     <div class="space-y-3">
-                        <p class="text-lg"><strong>Name:</strong> <span id="profile-name"></span></p>
-                        <p class="text-lg"><strong>Email:</strong> <span id="profile-email"></span></p>
-                        <p class="text-lg"><strong>Height:</strong> <span id="profile-height"></span> cm</p>
-                        <p class="text-lg"><strong>Weight:</strong> <span id="profile-weight"></span> kg</p>
-                        <p class="text-lg"><strong>BMI:</strong> <span id="profile-bmi"></span></p>
+                        <p class="text-lg"><strong>Name:</strong> <span id="profile-name">N/A</span></p>
+                        <p class="text-lg"><strong>Email:</strong> <span id="profile-email">N/A</span></p>
+                        <p class="text-lg"><strong>Height:</strong> <span id="profile-height">N/A</span> cm</p>
+                        <p class="text-lg"><strong>Weight:</strong> <span id="profile-weight">N/A</span> kg</p>
+                        <p class="text-lg"><strong>BMI:</strong> <span id="profile-bmi">N/A</span></p>
                         <button onclick="editProfile()" class="mt-4 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                             Edit Profile
@@ -106,12 +110,15 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m-3-3v12m-9 0h18" /></svg>
                             Calculate BMI
                         </button>
-                        <p class="mt-2 text-lg">Result: <span id="bmi-result">N/A</span></p>
+                        <div id="bmi-result-card" class="mt-4 p-4 glass-effect rounded-xl bmi-result-card fade-in hidden">
+                            <p class="text-lg font-semibold">BMI: <span id="bmi-result" class="text-xl font-bold"></span></p>
+                            <p class="text-sm mt-2">Category: <span id="bmi-category"></span></p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Dashboard Section -->
-                <div id="dashboard-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                <div id="dashboard-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in overflow-hidden">
                     <h2 class="text-3xl font-bold mb-6 text-white">Dashboard</h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
@@ -165,14 +172,18 @@
                         <canvas id="progress-chart" class="bg-gray-800 rounded-xl p-4 shadow-lg"></canvas>
                     </div>
                     <div class="mt-6 bg-gray-800 p-6 rounded-xl shadow-lg">
-                        <h3 class="text-lg font-semibold mb-2 text-white flex items-center gap-2">
+                        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                             Progress Summary
                         </h3>
-                        <p>Total Workouts: <span id="total-workouts">0</span></p>
-                        <p>Total Duration: <span id="total-duration">0</span> min</p>
-                        <p>Total Calories Burned: <span id="total-calories">0</span></p>
-                        <p>Calorie Burn Goal Progress: <span id="calories-progress-percent">0%</span> (<span id="calories-remaining">0</span> remaining)</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="chart-container bg-gray-800 rounded-xl p-4 shadow-lg">
+                                <canvas id="workout-category-chart"></canvas>
+                            </div>
+                            <div class="chart-container bg-gray-800 rounded-xl p-4 shadow-lg">
+                                <canvas id="workout-stats-chart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -246,10 +257,16 @@
                         <input id="calorie-intake-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <label class="block font-semibold text-lg">Calorie Burn Goal (cal/week):</label>
                         <input id="calorie-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        <button onclick="saveGoals()" class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            Save Goals
-                        </button>
+                        <div class="flex gap-4">
+                            <button onclick="saveGoals()" class="flex-1 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                Save Goals
+                            </button>
+                            <button onclick="resetGoals()" class="flex-1 p-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg hover:from-red-700 hover:to-red-600 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                Reset Goals
+                            </button>
+                        </div>
                     </div>
                     <h3 class="text-xl font-semibold mt-6 mb-4 text-white">Current Goals</h3>
                     <div class="space-y-3">
@@ -264,7 +281,7 @@
                 <div id="contact-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
                     <h2 class="text-3xl font-bold mb-6 text-white">Contact Us</h2>
                     <p class="mb-4 text-lg">Have questions or feedback? Send us a message!</p>
-                    <form action="https://formspree.io/f/mzzrbbnd" method="POST" class="space-y-4 max-w-md mx-auto">
+                    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-4 max-w-md mx-auto">
                         <label for="name" class="block font-semibold text-lg">Name</label>
                         <input type="text" id="name" name="name" placeholder="Your name" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <label for="email" class="block font-semibold text-lg">Email</label>
@@ -281,9 +298,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js">
-    
+        
     </script>
 </body>
 </html>
