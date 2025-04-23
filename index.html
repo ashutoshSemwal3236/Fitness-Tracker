@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,6 @@
     <title>Fitness Tracker App</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
@@ -163,13 +161,24 @@
                                 <button onclick="resetCalorieIntake()" class="flex-1 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition transform hover:scale-105">Reset</button>
                             </div>
                         </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                <h3 class="text-lg font-semibold">Calories Burned</h3>
+                            </div>
+                            <p id="total-calories-burned" class="text-2xl text-blue-400 mb-2">0 cal</p>
+                            <div class="progress-bar"><div id="calories-burned-progress" style="width: 0%"></div></div>
+                            <p class="mt-2 text-sm">Goal Progress: <span id="calories-burned-progress-percent">0%</span> (<span id="calories-burned-remaining">0</span> cal remaining)</p>
+                        </div>
                     </div>
                     <div class="mt-6">
                         <h3 class="text-xl font-semibold mb-4 text-white flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                             Daily Progress Charts
                         </h3>
-                        <canvas id="progress-chart" class="bg-gray-800 rounded-xl p-4 shadow-lg"></canvas>
+                        <div class="chart-container bg-gray-800 rounded-xl p-4 shadow-lg">
+                            <canvas id="progress-chart"></canvas>
+                        </div>
                     </div>
                     <div class="mt-6 bg-gray-800 p-6 rounded-xl shadow-lg">
                         <h3 class="text-lg font-semibold text-white flex items-center gap-2">
@@ -234,13 +243,15 @@
                             <option value="Flexibility">Flexibility</option>
                         </select>
                         <input id="workout-duration" type="number" placeholder="Duration (minutes)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        <input id="workout-calories" type="number" placeholder="Calories Burned" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <input id="workout-sets" type="number" placeholder="Number of Sets" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
-                    <button onclick="addWorkout()" class="mt-6 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
+                    <button onclick="calculateAndAddWorkout()" class="mt-6 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                         Add Workout
                     </button>
+                    <div id="calorie-result" class="mt-4 text-lg text-blue-400 hidden">
+                        Estimated Calories Burned: <span id="calorie-value">0</span> cal
+                    </div>
                     <h2 class="text-2xl font-bold mt-8 mb-4 text-white">Workout History</h2>
                     <ul id="workout-list" class="space-y-2"></ul>
                 </div>
@@ -255,8 +266,8 @@
                         <input id="water-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <label class="block font-semibold text-lg">Calorie Intake Goal (cal/day):</label>
                         <input id="calorie-intake-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        <label class="block font-semibold text-lg">Calorie Burn Goal (cal/week):</label>
-                        <input id="calorie-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label class="block font-semibold text-lg">Calorie Burn Goal (cal/day):</label>
+                        <input id="calorie-goal" type="number" placeholder="e.g., 500" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <div class="flex gap-4">
                             <button onclick="saveGoals()" class="flex-1 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center justify-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
@@ -273,7 +284,8 @@
                         <p class="text-lg">Steps: <span id="current-step-goal">0</span>/day (<span id="steps-progress-percent-goal">0%</span>, <span id="steps-remaining-goal">0</span> remaining)<div class="progress-bar"><div id="steps-goal-progress" style="width: 0%"></div></div></p>
                         <p class="text-lg">Water: <span id="current-water-goal">0</span> ml/day (<span id="water-progress-percent-goal">0%</span>, <span id="water-remaining-goal">0</span> ml remaining)<div class="progress-bar"><div id="water-goal-progress" style="width: 0%"></div></div></p>
                         <p class="text-lg">Calorie Intake: <span id="current-calorie-intake-goal">0</span> cal/day (<span id="calorie-intake-progress-percent-goal">0%</span>, <span id="calorie-intake-remaining-goal">0</span> cal remaining)<div class="progress-bar"><div id="calorie-intake-goal-progress" style="width: 0%"></div></div></p>
-                        <p class="text-lg">Calorie Burn: <span id="current-calorie-goal">0</span>/week (<span id="calories-progress-percent-goal">0%</span>, <span id="calories-remaining-goal">0</span> remaining)<div class="progress-bar"><div id="calories-goal-progress" style="width: 0%"></div></div></p>
+                        <p class="text-lg">Calorie Burn (Daily): <span id="current-calorie-goal">0</span>/day (<span id="calories-progress-percent-goal">0%</span>, <span id="calories-remaining-goal">0</span> cal remaining)<div class="progress-bar"><div id="calories-goal-progress" style="width: 0%"></div></div></p>
+                        <p class="text-lg">Calorie Burn (Weekly): <span id="current-calorie-goal-weekly">0</span>/week (<span id="calories-progress-percent-goal-weekly">0%</span>, <span id="calories-remaining-goal-weekly">0</span> cal remaining)<div class="progress-bar"><div id="calories-goal-progress-weekly" style="width: 0%"></div></div></p>
                     </div>
                 </div>
 
@@ -297,9 +309,9 @@
             </main>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js">
-        
+   
     </script>
 </body>
 </html>
