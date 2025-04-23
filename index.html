@@ -7,253 +7,283 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans">
-    <div id="app" class="min-h-screen flex flex-col md:flex-row">
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+    <div id="app" class="flex flex-col min-h-screen">
         <!-- Login Screen -->
-        <div id="login-screen" class="flex-1 flex flex-col items-center justify-center auth-background">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">Fitness Tracker</h1>
-            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
-                <h2 class="text-3xl font-bold mb-6 text-center text-gray-100">Login</h2>
-                <div class="space-y-4">
-                    <input id="login-email" type="email" placeholder="Email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <input id="login-password" type="password" placeholder="Password" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <button onclick="login()" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold">Login</button>
-                    <p class="text-center text-gray-400">Don't have an account? <a href="#" onclick="showSignup()" class="text-blue-400 hover:underline">Sign Up</a></p>
+        <div id="login-screen" class="flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="Fitness background" class="absolute inset-0 w-full h-full object-cover opacity-30">
+            <div class="relative z-10 fade-in">
+                <h1 class="text-5xl font-extrabold mb-8 text-white drop-shadow-lg">Fitness Tracker</h1>
+                <div class="glass-effect p-8 rounded-xl shadow-2xl w-full max-w-md">
+                    <h2 class="text-2xl font-semibold text-center mb-6">Login</h2>
+                    <div class="space-y-4">
+                        <input id="login-email" type="email" placeholder="Email" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="login-password" type="password" placeholder="Password" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <button onclick="login()" class="w-full p-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg hover:from-blue-700 hover:to-blue-600 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14" /></svg>
+                            Login
+                        </button>
+                        <p class="text-center text-gray-400">Don't have an account? <a href="#" onclick="showSignup()" class="text-blue-400 hover:underline">Sign Up</a></p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Signup Screen -->
-        <div id="signup-screen" class="hidden flex-1 flex flex-col items-center justify-center auth-background">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-8 tracking-tight">Fitness Tracker</h1>
-            <div class="bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
-                <h2 class="text-3xl font-bold mb-6 text-center text-gray-100">Sign Up</h2>
-                <div class="space-y-4">
-                    <input id="signup-name" type="text" placeholder="Full Name" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <input id="signup-email" type="email" placeholder="Email" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <input id="signup-password" type="password" placeholder="Password" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <input id="signup-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <input id="signup-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                    <button onclick="signup()" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold">Sign Up</button>
-                    <p class="text-center text-gray-400">Already have an account? <a href="#" onclick="showLogin()" class="text-blue-400 hover:underline">Login</a></p>
+        <div id="signup-screen" class="hidden flex-1 flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="Fitness background" class="absolute inset-0 w-full h-full object-cover opacity-30">
+            <div class="relative z-10 fade-in">
+                <h1 class="text-5xl font-extrabold mb-8 text-white drop-shadow-lg">Fitness Tracker</h1>
+                <div class="glass-effect p-8 rounded-xl shadow-2xl w-full max-w-md">
+                    <h2 class="text-2xl font-semibold text-center mb-6">Sign Up</h2>
+                    <div class="space-y-4">
+                        <input id="signup-name" type="text" placeholder="Full Name" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="signup-email" type="email" placeholder="Email" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="signup-password" type="password" placeholder="Password" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="signup-height" type="number" placeholder="Height (cm)" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="signup-weight" type="number" placeholder="Weight (kg)" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <button onclick="signup()" class="w-full p-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:from-green-700 hover:to-green-600 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                            Sign Up
+                        </button>
+                        <p class="text-center text-gray-400">Already have an account? <a href="#" onclick="showLogin()" class="text-blue-400 hover:underline">Login</a></p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Main App Screen -->
-        <div id="main-screen" class="hidden flex-1 flex flex-col md:flex-row">
+        <div id="main-screen" class="hidden flex flex-col md:flex-row">
             <!-- Sidebar -->
-            <div id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-6 md:static md:translate-x-0 sidebar-hidden">
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-xl font-bold">Fitness Tracker</h1>
-                    <button onclick="toggleSidebar()" class="md:hidden text-gray-100">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+            <div id="sidebar" class="bg-gradient-to-b from-gray-800 to-gray-900 w-full md:w-64 p-6 transition-transform duration-300 fixed top-0 left-0 h-full z-50 md:static shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-white">Fitness Tracker</h1>
+                    <button onclick="toggleSidebar()" class="text-gray-100 text-2xl md:hidden">×</button>
                 </div>
                 <ul class="space-y-2">
-                    <li><a href="#" onclick="showSection('profile')" class="block p-2 rounded hover:bg-gray-700 transition">Profile</a></li>
-                    <li><a href="#" onclick="showSection('dashboard')" class="block p-2 rounded hover:bg-gray-700 transition">Dashboard</a></li>
-                    <li><a href="#" onclick="showSection('workouts')" class="block p-2 rounded hover:bg-gray-700 transition">Workouts</a></li>
-                    <li><a href="#" onclick="showSection('goals')" class="block p-2 rounded hover:bg-gray-700 transition">Goals</a></li>
-                    <li><a href="#" onclick="showSection('contact')" class="block p-2 rounded hover:bg-gray-700 transition">Contact Us</a></li>
-                    <li><a href="#" onclick="logout()" class="block p-2 rounded hover:bg-red-600 transition">Logout</a></li>
+                    <li><a href="#" onclick="showSection('profile')" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg> Profile</a></li>
+                    <li><a href="#" onclick="showSection('dashboard')" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg> Dashboard</a></li>
+                    <li><a href="#" onclick="showSection('workouts')" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18m-7 6h7" /></svg> Workouts</a></li>
+                    <li><a href="#" onclick="showSection('goals')" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> Goals</a></li>
+                    <li><a href="#" onclick="showSection('contact')" class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-700 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg> Contact Us</a></li>
+                    <li><a href="#" onclick="logout()" class="flex items-center gap-2 p-3 rounded-lg hover:bg-red-600 transition transform hover:scale-105"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg> Logout</a></li>
                 </ul>
             </div>
             <!-- Mobile Menu Button -->
-            <button onclick="toggleSidebar()" class="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-2 rounded-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <button onclick="toggleSidebar()" class="md:hidden fixed top-4 left-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition transform hover:scale-110">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
             </button>
             <!-- Main Content -->
-            <main class="flex-1 p-6 bg-gray-900">
-                <div class="max-w-4xl mx-auto">
-                    <!-- Profile Section -->
-                    <div id="profile-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Profile Details</h2>
-                        <div class="space-y-4 text-gray-300">
-                            <p><strong>Name:</strong> <span id="profile-name"></span></p>
-                            <p><strong>Email:</strong> <span id="profile-email"></span></p>
-                            <p><strong>Height:</strong> <span id="profile-height"></span> cm</p>
-                            <p><strong>Weight:</strong> <span id="profile-weight"></span> kg</p>
-                            <p><strong>BMI:</strong> <span id="profile-bmi"></span></p>
-                            <button onclick="editProfile()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Edit Profile</button>
+            <main class="flex-1 p-6">
+                <!-- Profile Section -->
+                <div id="profile-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Profile Details</h2>
+                    <div class="space-y-3">
+                        <p class="text-lg"><strong>Name:</strong> <span id="profile-name"></span></p>
+                        <p class="text-lg"><strong>Email:</strong> <span id="profile-email"></span></p>
+                        <p class="text-lg"><strong>Height:</strong> <span id="profile-height"></span> cm</p>
+                        <p class="text-lg"><strong>Weight:</strong> <span id="profile-weight"></span> kg</p>
+                        <p class="text-lg"><strong>BMI:</strong> <span id="profile-bmi"></span></p>
+                        <button onclick="editProfile()" class="mt-4 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            Edit Profile
+                        </button>
+                    </div>
+                    <div id="edit-profile-form" class="hidden mt-6 space-y-4">
+                        <input id="edit-name" type="text" placeholder="Full Name" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="edit-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="edit-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <button onclick="saveProfile()" class="p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition transform hover:scale-105 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Save Changes
+                        </button>
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold mb-4 text-white">BMI Calculator</h3>
+                        <input id="bmi-height" type="number" placeholder="Height (cm)" class="w-full p-3 mb-4 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="bmi-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 mb-4 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <button onclick="calculateBMI()" class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m-3-3v12m-9 0h18" /></svg>
+                            Calculate BMI
+                        </button>
+                        <p class="mt-2 text-lg">Result: <span id="bmi-result">N/A</span></p>
+                    </div>
+                </div>
+
+                <!-- Dashboard Section -->
+                <div id="dashboard-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                <h3 class="text-lg font-semibold">Daily Steps</h3>
+                            </div>
+                            <p id="daily-steps" class="text-2xl text-blue-400 mb-2">0</p>
+                            <div class="progress-bar"><div id="steps-progress" style="width: 0%"></div></div>
+                            <p class="mt-2 text-sm">Goal Progress: <span id="steps-progress-percent">0%</span> (<span id="steps-remaining">0</span> remaining)</p>
+                            <input id="step-input" type="number" placeholder="Enter steps" class="w-full p-3 mt-4 border border-gray-600 rounded-lg bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="logSteps()" class="flex-1 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105">Log Steps</button>
+                                <button onclick="resetSteps()" class="flex-1 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition transform hover:scale-105">Reset</button>
+                            </div>
                         </div>
-                        <div id="edit-profile-form" class="hidden mt-6 space-y-4">
-                            <input id="edit-name" type="text" placeholder="Full Name" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input id="edit-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input id="edit-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button onclick="saveProfile()" class="bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition">Save Changes</button>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>
+                                <h3 class="text-lg font-semibold">Water Intake</h3>
+                            </div>
+                            <p id="water-intake" class="text-2xl text-blue-400 mb-2">0 ml</p>
+                            <div class="progress-bar"><div id="water-progress" style="width: 0%"></div></div>
+                            <p class="mt-2 text-sm">Goal Progress: <span id="water-progress-percent">0%</span> (<span id="water-remaining">0</span> ml remaining)</p>
+                            <input id="water-input" type="number" placeholder="Enter ml" class="w-full p-3 mt-4 border border-gray-600 rounded-lg bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="logWater()" class="flex-1 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105">Log Water</button>
+                                <button onclick="resetWater()" class="flex-1 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition transform hover:scale-105">Reset</button>
+                            </div>
                         </div>
-                        <div class="mt-6">
-                            <h3 class="text-xl font-bold mb-4 text-gray-100">BMI Calculator</h3>
-                            <div class="space-y-4">
-                                <input id="bmi-height" type="number" placeholder="Height (cm)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <input id="bmi-weight" type="number" placeholder="Weight (kg)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <button onclick="calculateBMI()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Calculate BMI</button>
-                                <p class="text-gray-300">Result: <span id="bmi-result">N/A</span></p>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                            <div class="flex items-center gap-2 mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <h3 class="text-lg font-semibold">Calorie Intake</h3>
+                            </div>
+                            <p id="calorie-intake" class="text-2xl text-blue-400 mb-2">0 cal</p>
+                            <div class="progress-bar"><div id="calorie-intake-progress" style="width: 0%"></div></div>
+                            <p class="mt-2 text-sm">Goal Progress: <span id="calorie-intake-progress-percent">0%</span> (<span id="calorie-intake-remaining">0</span> cal remaining)</p>
+                            <input id="calorie-intake-input" type="number" placeholder="Enter cal" class="w-full p-3 mt-4 border border-gray-600 rounded-lg bg-gray-900 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <div class="flex gap-2 mt-4">
+                                <button onclick="logCalorieIntake()" class="flex-1 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105">Log Calories</button>
+                                <button onclick="resetCalorieIntake()" class="flex-1 p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition transform hover:scale-105">Reset</button>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Dashboard Section -->
-                    <div id="dashboard-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Dashboard</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="bg-gray-700 p-6 rounded-lg">
-                                <h3 class="font-semibold text-gray-100 mb-2">Daily Steps</h3>
-                                <p id="daily-steps" class="text-2xl text-blue-400">0</p>
-                                <div class="progress-bar mt-2"><div id="steps-progress" class="progress-fill"></div></div>
-                                <p class="text-gray-400 mt-2">Goal Progress: <span id="steps-progress-percent">0%</span> (<span id="steps-remaining">0</span> remaining)</p>
-                                <input id="step-input" type="number" placeholder="Enter steps" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <div class="flex space-x-2 mt-4">
-                                    <button onclick="logSteps()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Steps</button>
-                                    <button onclick="resetSteps()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
-                                </div>
-                            </div>
-                            <div class="bg-gray-700 p-6 rounded-lg">
-                                <h3 class="font-semibold text-gray-100 mb-2">Water Intake</h3>
-                                <p id="water-intake" class="text-2xl text-blue-400">0 ml</p>
-                                <div class="progress-bar mt-2"><div id="water-progress" class="progress-fill"></div></div>
-                                <p class="text-gray-400 mt-2">Goal Progress: <span id="water-progress-percent">0%</span> (<span id="water-remaining">0</span> ml remaining)</p>
-                                <input id="water-input" type="number" placeholder="Enter ml" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <div class="flex space-x-2 mt-4">
-                                    <button onclick="logWater()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Water</button>
-                                    <button onclick="resetWater()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
-                                </div>
-                            </div>
-                            <div class="bg-gray-700 p-6 rounded-lg">
-                                <h3 class="font-semibold text-gray-100 mb-2">Calorie Intake</h3>
-                                <p id="calorie-intake" class="text-2xl text-blue-400">0 cal</p>
-                                <div class="progress-bar mt-2"><div id="calorie-intake-progress" class="progress-fill"></div></div>
-                                <p class="text-gray-400 mt-2">Goal Progress: <span id="calorie-intake-progress-percent">0%</span> (<span id="calorie-intake-remaining">0</span> cal remaining)</p>
-                                <input id="calorie-intake-input" type="number" placeholder="Enter cal" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <div class="flex space-x-2 mt-4">
-                                    <button onclick="logCalorieIntake()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">Log Calories</button>
-                                    <button onclick="resetCalorieIntake()" class="flex-1 bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition">Reset</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-700 p-6 rounded-lg mt-6">
-                            <h3 class="font-semibold text-gray-100 mb-2">Progress Summary</h3>
-                            <p class="text-gray-300">Total Workouts: <span id="total-workouts">0</span></p>
-                            <p class="text-gray-300">Total Duration: <span id="total-duration">0</span> min</p>
-                            <p class="text-gray-300">Total Calories Burned: <span id="total-calories">0</span></p>
-                            <p class="text-gray-300 mt-2">Calorie Burn Goal Progress: <span id="calories-progress-percent">0%</span> (<span id="calories-remaining">0</span> remaining)</p>
-                        </div>
+                    <div class="mt-6">
+                        <h3 class="text-xl font-semibold mb-4 text-white flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                            Daily Progress Charts
+                        </h3>
+                        <canvas id="progress-chart" class="bg-gray-800 rounded-xl p-4 shadow-lg"></canvas>
                     </div>
+                    <div class="mt-6 bg-gray-800 p-6 rounded-xl shadow-lg">
+                        <h3 class="text-lg font-semibold mb-2 text-white flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            Progress Summary
+                        </h3>
+                        <p>Total Workouts: <span id="total-workouts">0</span></p>
+                        <p>Total Duration: <span id="total-duration">0</span> min</p>
+                        <p>Total Calories Burned: <span id="total-calories">0</span></p>
+                        <p>Calorie Burn Goal Progress: <span id="calories-progress-percent">0%</span> (<span id="calories-remaining">0</span> remaining)</p>
+                    </div>
+                </div>
 
-                    <!-- Workouts Section -->
-                    <div id="workouts-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Log Workout</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="flex flex-col">
-                                <select id="workout-type" onchange="toggleCustomWorkout()" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <option value="" selected>Select Exercise</option>
-                                    <option value="custom">Custom Exercise</option>
-                                    <optgroup label="Chest">
-                                        <option value="Bench Press">Bench Press</option>
-                                        <option value="Push-Ups">Push-Ups</option>
-                                        <option value="Chest Fly">Chest Fly</option>
-                                        <option value="Incline Press">Incline Press</option>
-                                    </optgroup>
-                                    <optgroup label="Back">
-                                        <option value="Pull-Ups">Pull-Ups</option>
-                                        <option value="Deadlift">Deadlift</option>
-                                        <option value="Bent-Over Row">Bent-Over Row</option>
-                                        <option value="Lat Pulldown">Lat Pulldown</option>
-                                    </optgroup>
-                                    <optgroup label="Legs">
-                                        <option value="Squats">Squats</option>
-                                        <option value="Lunges">Lunges</option>
-                                        <option value="Leg Press">Leg Press</option>
-                                        <option value="Calf Raises">Calf Raises</option>
-                                    </optgroup>
-                                    <optgroup label="Arms">
-                                        <option value="Bicep Curls">Bicep Curls</option>
-                                        <option value="Tricep Dips">Tricep Dips</option>
-                                        <option value="Hammer Curls">Hammer Curls</option>
-                                        <option value="Skull Crushers">Skull Crushers</option>
-                                    </optgroup>
-                                    <optgroup label="Core">
-                                        <option value="Plank">Plank</option>
-                                        <option value="Crunches">Crunches</option>
-                                        <option value="Russian Twists">Russian Twists</option>
-                                        <option value="Leg Raises">Leg Raises</option>
-                                    </optgroup>
-                                </select>
-                                <input id="custom-workout" type="text" placeholder="Enter Custom Exercise" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 mt-2 hidden focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            </div>
-                            <select id="workout-category" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                <option value="Strength">Strength</option>
-                                <option value="Cardio">Cardio</option>
-                                <option value="Flexibility">Flexibility</option>
+                <!-- Workouts Section -->
+                <div id="workouts-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Log Workout</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <select id="workout-type" onchange="toggleCustomWorkout()" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                                <option value="" selected>Select Exercise</option>
+                                <option value="custom">Custom Exercise</option>
+                                <optgroup label="Chest">
+                                    <option value="Bench Press">Bench Press</option>
+                                    <option value="Push-Ups">Push-Ups</option>
+                                    <option value="Chest Fly">Chest Fly</option>
+                                    <option value="Incline Press">Incline Press</option>
+                                </optgroup>
+                                <optgroup label="Back">
+                                    <option value="Pull-Ups">Pull-Ups</option>
+                                    <option value="Deadlift">Deadlift</option>
+                                    <option value="Bent-Over Row">Bent-Over Row</option>
+                                    <option value="Lat Pulldown">Lat Pulldown</option>
+                                </optgroup>
+                                <optgroup label="Legs">
+                                    <option value="Squats">Squats</option>
+                                    <option value="Lunges">Lunges</option>
+                                    <option value="Leg Press">Leg Press</option>
+                                    <option value="Calf Raises">Calf Raises</option>
+                                </optgroup>
+                                <optgroup label="Arms">
+                                    <option value="Bicep Curls">Bicep Curls</option>
+                                    <option value="Tricep Dips">Tricep Dips</option>
+                                    <option value="Hammer Curls">Hammer Curls</option>
+                                    <option value="Skull Crushers">Skull Crushers</option>
+                                </optgroup>
+                                <optgroup label="Core">
+                                    <option value="Plank">Plank</option>
+                                    <option value="Crunches">Crunches</option>
+                                    <option value="Russian Twists">Russian Twists</option>
+                                    <option value="Leg Raises">Leg Raises</option>
+                                </optgroup>
                             </select>
-                            <input id="workout-duration" type="number" placeholder="Duration (minutes)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input id="workout-calories" type="number" placeholder="Calories Burned" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <input id="workout-sets" type="number" placeholder="Number of Sets" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input id="custom-workout" type="text" placeholder="Enter Custom Exercise" class="hidden w-full p-3 mt-2 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         </div>
-                        <button onclick="addWorkout()" class="mt-6 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">Add Workout</button>
-                        <h2 class="text-2xl font-bold mt-8 mb-4 text-gray-100">Workout History</h2>
-                        <ul id="workout-list" class="space-y-4"></ul>
+                        <select id="workout-category" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <option value="Strength">Strength</option>
+                            <option value="Cardio">Cardio</option>
+                            <option value="Flexibility">Flexibility</option>
+                        </select>
+                        <input id="workout-duration" type="number" placeholder="Duration (minutes)" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="workout-calories" type="number" placeholder="Calories Burned" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input id="workout-sets" type="number" placeholder="Number of Sets" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
+                    <button onclick="addWorkout()" class="mt-6 p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+                        Add Workout
+                    </button>
+                    <h2 class="text-2xl font-bold mt-8 mb-4 text-white">Workout History</h2>
+                    <ul id="workout-list" class="space-y-2"></ul>
+                </div>
 
-                    <!-- Goals Section -->
-                    <div id="goals-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-100">Fitness Goals</h2>
-                        <div class="space-y-6">
-                            <div>
-                                <label class="font-semibold text-gray-100">Step Goal (steps/day):</label>
-                                <input id="step-goal" type="number" placeholder="e.g., 10000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-100">Water Goal (ml/day):</label>
-                                <input id="water-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-100">Calorie Intake Goal (cal/day):</label>
-                                <input id="calorie-intake-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
-                            </div>
-                            <div>
-                                <label class="font-semibold text-gray-100">Calorie Burn Goal (cal/week):</label>
-                                <input id="calorie-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-2">
-                            </div>
-                            <button onclick="saveGoals()" class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition w-full md:w-auto">Save Goals</button>
-                        </div>
-                        <h3 class="text-xl font-bold mt-8 mb-4 text-gray-100">Current Goals</h3>
-                        <div class="space-y-4 text-gray-300">
-                            <p>Steps: <span id="current-step-goal">0</span>/day (<span id="steps-progress-percent-goal">0%</span>, <span id="steps-remaining-goal">0</span> remaining)<div class="progress-bar mt-2"><div id="steps-goal-progress" class="progress-fill"></div></div></p>
-                            <p>Water: <span id="current-water-goal">0</span> ml/day (<span id="water-progress-percent-goal">0%</span>, <span id="water-remaining-goal">0</span> ml remaining)<div class="progress-bar mt-2"><div id="water-goal-progress" class="progress-fill"></div></div></p>
-                            <p>Calorie Intake: <span id="current-calorie-intake-goal">0</span> cal/day (<span id="calorie-intake-progress-percent-goal">0%</span>, <span id="calorie-intake-remaining-goal">0</span> cal remaining)<div class="progress-bar mt-2"><div id="calorie-intake-goal-progress" class="progress-fill"></div></div></p>
-                            <p>Calorie Burn: <span id="current-calorie-goal">0</span>/week (<span id="calories-progress-percent-goal">0%</span>, <span id="calories-remaining-goal">0</span> remaining)<div class="progress-bar mt-2"><div id="calories-goal-progress" class="progress-fill"></div></div></p>
-                        </div>
+                <!-- Goals Section -->
+                <div id="goals-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Fitness Goals</h2>
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg">Step Goal (steps/day):</label>
+                        <input id="step-goal" type="number" placeholder="e.g., 10000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label class="block font-semibold text-lg">Water Goal (ml/day):</label>
+                        <input id="water-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label class="block font-semibold text-lg">Calorie Intake Goal (cal/day):</label>
+                        <input id="calorie-intake-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label class="block font-semibold text-lg">Calorie Burn Goal (cal/week):</label>
+                        <input id="calorie-goal" type="number" placeholder="e.g., 2000" class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <button onclick="saveGoals()" class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Save Goals
+                        </button>
                     </div>
+                    <h3 class="text-xl font-semibold mt-6 mb-4 text-white">Current Goals</h3>
+                    <div class="space-y-3">
+                        <p class="text-lg">Steps: <span id="current-step-goal">0</span>/day (<span id="steps-progress-percent-goal">0%</span>, <span id="steps-remaining-goal">0</span> remaining)<div class="progress-bar"><div id="steps-goal-progress" style="width: 0%"></div></div></p>
+                        <p class="text-lg">Water: <span id="current-water-goal">0</span> ml/day (<span id="water-progress-percent-goal">0%</span>, <span id="water-remaining-goal">0</span> ml remaining)<div class="progress-bar"><div id="water-goal-progress" style="width: 0%"></div></div></p>
+                        <p class="text-lg">Calorie Intake: <span id="current-calorie-intake-goal">0</span> cal/day (<span id="calorie-intake-progress-percent-goal">0%</span>, <span id="calorie-intake-remaining-goal">0</span> cal remaining)<div class="progress-bar"><div id="calorie-intake-goal-progress" style="width: 0%"></div></div></p>
+                        <p class="text-lg">Calorie Burn: <span id="current-calorie-goal">0</span>/week (<span id="calories-progress-percent-goal">0%</span>, <span id="calories-remaining-goal">0</span> remaining)<div class="progress-bar"><div id="calories-goal-progress" style="width: 0%"></div></div></p>
+                    </div>
+                </div>
 
-                    <!-- Contact Us Section -->
-                    <div id="contact-section" class="hidden bg-gray-800 p-8 rounded-xl shadow-lg mb-6">
-                        <h2 class="text-2xl font-bold mb-6 text-gray-100 text-center">Contact Us</h2>
-                        <p class="text-gray-300 mb-6 text-center">Have questions or feedback? Send us a message!</p>
-                        <form action="https://formspree.io/f/mzzrbbnd" method="POST" class="space-y-4 max-w-md mx-auto">
-                            <div>
-                                <label for="name" class="block font-semibold text-gray-100 mb-2">Name</label>
-                                <input type="text" id="name" name="name" placeholder="Your name" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                            </div>
-                            <div>
-                                <label for="email" class="block font-semibold text-gray-100 mb-2">Email</label>
-                                <input type="email" id="email" name="email" placeholder="Your email" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                            </div>
-                            <div>
-                                <label for="message" class="block font-semibold text-gray-100 mb-2">Message</label>
-                                <textarea id="message" name="message" placeholder="Your message" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 h-32 resize-vertical"></textarea>
-                            </div>
-                            <input type="submit" value="Send Message" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold cursor-pointer">
-                        </form>
-                    </div>
+                <!-- Contact Us Section -->
+                <div id="contact-section" class="hidden glass-effect p-8 rounded-xl shadow-2xl fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Contact Us</h2>
+                    <p class="mb-4 text-lg">Have questions or feedback? Send us a message!</p>
+                    <form action="https://formspree.io/f/mzzrbbnd" method="POST" class="space-y-4 max-w-md mx-auto">
+                        <label for="name" class="block font-semibold text-lg">Name</label>
+                        <input type="text" id="name" name="name" placeholder="Your name" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label for="email" class="block font-semibold text-lg">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your email" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <label for="message" class="block font-semibold text-lg">Message</label>
+                        <textarea id="message" name="message" placeholder="Your message" required class="w-full p-3 border border-gray-600 rounded-lg bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition h-32 resize-y"></textarea>
+                        <button type="submit" class="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition transform hover:scale-105 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                            Send Message
+                        </button>
+                    </form>
                 </div>
             </main>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js">
-        
+    
     </script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-// Initialize localStorage if not present
 if (!localStorage.getItem("user")) {
   localStorage.setItem("user", JSON.stringify({}));
 }
@@ -74,21 +73,22 @@ function logout() {
 
 // Screen Navigation
 function showLogin() {
-  console.log("Showing login screen");
   document.getElementById("login-screen").classList.remove("hidden");
   document.getElementById("signup-screen").classList.add("hidden");
   document.getElementById("main-screen").classList.add("hidden");
 }
 
 function showSignup() {
-  console.log("Showing signup screen");
   document.getElementById("signup-screen").classList.remove("hidden");
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("main-screen").classList.add("hidden");
 }
 
 function showMain() {
-  console.log("Showing main screen");
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    showLogin();
+    return;
+  }
   document.getElementById("main-screen").classList.remove("hidden");
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("signup-screen").classList.add("hidden");
@@ -100,24 +100,22 @@ function showMain() {
 }
 
 function showSection(section) {
-  console.log(`Showing section: ${section}`);
   ["profile", "dashboard", "workouts", "goals", "contact"].forEach((s) => {
-    const sectionEl = document.getElementById(`${s}-section`);
-    if (sectionEl) sectionEl.classList.add("hidden");
+    document.getElementById(`${s}-section`).classList.add("hidden");
   });
-  const targetSection = document.getElementById(`${section}-section`);
-  if (targetSection) targetSection.classList.remove("hidden");
-  toggleSidebar(false); // Close sidebar on mobile after selection
+  const sectionEl = document.getElementById(`${section}-section`);
+  sectionEl.classList.remove("hidden");
+  sectionEl.classList.add("fade-in");
+  setTimeout(() => sectionEl.classList.remove("fade-in"), 500);
+  toggleSidebar(false);
 }
 
 function toggleSidebar(show = null) {
   const sidebar = document.getElementById("sidebar");
-  if (sidebar) {
-    if (show === null) {
-      sidebar.classList.toggle("sidebar-hidden");
-    } else {
-      sidebar.classList.toggle("sidebar-hidden", !show);
-    }
+  if (show === null) {
+    sidebar.classList.toggle("active");
+  } else {
+    sidebar.classList.toggle("active", show);
   }
 }
 
@@ -213,12 +211,9 @@ function addWorkout() {
   const duration = parseInt(document.getElementById("workout-duration").value);
   const calories = parseInt(document.getElementById("workout-calories").value);
   const sets = parseInt(document.getElementById("workout-sets").value);
-
-  // Use custom workout type if selected and provided, otherwise use dropdown value
   if (type === "custom" && customType.trim()) {
     type = customType.trim();
   }
-
   if (
     type &&
     type !== "custom" &&
@@ -251,9 +246,7 @@ function addWorkout() {
       console.error(e);
     }
   } else {
-    alert(
-      "Please fill in all fields with valid values. For custom exercises, enter a valid exercise name."
-    );
+    alert("Please fill in all fields with valid values.");
   }
 }
 
@@ -262,20 +255,18 @@ function loadWorkouts() {
   workoutList.innerHTML = "";
   let totalDuration = 0;
   let totalCalories = 0;
-
   workouts.forEach((workout, index) => {
     const li = document.createElement("li");
     li.className =
-      "border-b border-gray-600 py-3 flex justify-between items-center text-gray-300";
+      "flex justify-between items-center p-3 bg-gray-700 rounded-lg hover:bg-gray-600 transition";
     li.innerHTML = `
                     <span>${workout.type} (${workout.category}) - ${workout.duration} min, ${workout.calories} cal, ${workout.sets} sets (${workout.date})</span>
-                    <button onclick="deleteWorkout(${index})" class="text-red-400 hover:text-red-500 transition">Delete</button>
+                    <button onclick="deleteWorkout(${index})" class="text-red-500 hover:text-red-700 transition transform hover:scale-110">Delete</button>
                 `;
     workoutList.appendChild(li);
     totalDuration += workout.duration;
     totalCalories += workout.calories;
   });
-
   document.getElementById("total-workouts").textContent = workouts.length;
   document.getElementById("total-duration").textContent = totalDuration;
   document.getElementById("total-calories").textContent = totalCalories;
@@ -293,13 +284,14 @@ function deleteWorkout(index) {
   }
 }
 
-// Daily Stats (Steps, Water, Calorie Intake)
+// Daily Stats
 let dailyStats = JSON.parse(localStorage.getItem("dailyStats")) || {
   steps: 0,
   water: 0,
   calorieIntake: 0,
   lastReset: new Date().toDateString(),
 };
+let progressChart = null;
 
 function loadDailyStats() {
   document.getElementById("daily-steps").textContent = dailyStats.steps;
@@ -308,6 +300,7 @@ function loadDailyStats() {
   document.getElementById("calorie-intake").textContent =
     dailyStats.calorieIntake + " cal";
   updateGoalProgress();
+  updateProgressChart();
 }
 
 function logSteps() {
@@ -396,6 +389,55 @@ function resetCalorieIntake() {
   }
 }
 
+// Progress Chart
+function updateProgressChart() {
+  const ctx = document.getElementById("progress-chart").getContext("2d");
+  if (progressChart) {
+    progressChart.destroy();
+  }
+  progressChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Steps", "Water (ml)", "Calorie Intake (cal)"],
+      datasets: [
+        {
+          label: "Current",
+          data: [dailyStats.steps, dailyStats.water, dailyStats.calorieIntake],
+          backgroundColor: "#3b82f6",
+        },
+        {
+          label: "Goal",
+          data: [goals.stepGoal, goals.waterGoal, goals.calorieIntakeGoal],
+          backgroundColor: "#10b981",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#e5e7eb" },
+          grid: { color: "#4b5563" },
+        },
+        x: {
+          ticks: { color: "#e5e7eb" },
+          grid: { color: "#4b5563" },
+        },
+      },
+      plugins: {
+        legend: { labels: { color: "#e5e7eb" } },
+        title: {
+          display: true,
+          text: "Daily Progress",
+          color: "#e5e7eb",
+          font: { size: 16 },
+        },
+      },
+    },
+  });
+}
+
 // Goals Management
 let goals = JSON.parse(localStorage.getItem("goals")) || {
   stepGoal: 0,
@@ -439,16 +481,17 @@ function saveGoals() {
 }
 
 function updateGoalProgress() {
-  // Steps progress
   const stepProgress =
     goals.stepGoal > 0 ? (dailyStats.steps / goals.stepGoal) * 100 : 0;
   const stepRemaining = goals.stepGoal - dailyStats.steps;
-  const stepsProgressEl = document.getElementById("steps-progress");
-  if (stepsProgressEl)
-    stepsProgressEl.style.width = `${Math.min(stepProgress, 100)}%`;
-  const stepsGoalProgressEl = document.getElementById("steps-goal-progress");
-  if (stepsGoalProgressEl)
-    stepsGoalProgressEl.style.width = `${Math.min(stepProgress, 100)}%`;
+  document.getElementById("steps-progress").style.width = `${Math.min(
+    stepProgress,
+    100
+  )}%`;
+  document.getElementById("steps-goal-progress").style.width = `${Math.min(
+    stepProgress,
+    100
+  )}%`;
   document.getElementById("steps-progress-percent").textContent = `${Math.round(
     stepProgress
   )}%`;
@@ -460,16 +503,17 @@ function updateGoalProgress() {
   document.getElementById("steps-remaining-goal").textContent =
     stepRemaining > 0 ? stepRemaining : 0;
 
-  // Water progress
   const waterProgress =
     goals.waterGoal > 0 ? (dailyStats.water / goals.waterGoal) * 100 : 0;
   const waterRemaining = goals.waterGoal - dailyStats.water;
-  const waterProgressEl = document.getElementById("water-progress");
-  if (waterProgressEl)
-    waterProgressEl.style.width = `${Math.min(waterProgress, 100)}%`;
-  const waterGoalProgressEl = document.getElementById("water-goal-progress");
-  if (waterGoalProgressEl)
-    waterGoalProgressEl.style.width = `${Math.min(waterProgress, 100)}%`;
+  document.getElementById("water-progress").style.width = `${Math.min(
+    waterProgress,
+    100
+  )}%`;
+  document.getElementById("water-goal-progress").style.width = `${Math.min(
+    waterProgress,
+    100
+  )}%`;
   document.getElementById("water-progress-percent").textContent = `${Math.round(
     waterProgress
   )}%`;
@@ -481,29 +525,19 @@ function updateGoalProgress() {
   document.getElementById("water-remaining-goal").textContent =
     waterRemaining > 0 ? waterRemaining : 0;
 
-  // Calorie Intake progress
   const calorieIntakeProgress =
     goals.calorieIntakeGoal > 0
       ? (dailyStats.calorieIntake / goals.calorieIntakeGoal) * 100
       : 0;
   const calorieIntakeRemaining =
     goals.calorieIntakeGoal - dailyStats.calorieIntake;
-  const calorieIntakeProgressEl = document.getElementById(
-    "calorie-intake-progress"
-  );
-  if (calorieIntakeProgressEl)
-    calorieIntakeProgressEl.style.width = `${Math.min(
-      calorieIntakeProgress,
-      100
-    )}%`;
-  const calorieIntakeGoalProgressEl = document.getElementById(
+  document.getElementById("calorie-intake-progress").style.width = `${Math.min(
+    calorieIntakeProgress,
+    100
+  )}%`;
+  document.getElementById(
     "calorie-intake-goal-progress"
-  );
-  if (calorieIntakeGoalProgressEl)
-    calorieIntakeGoalProgressEl.style.width = `${Math.min(
-      calorieIntakeProgress,
-      100
-    )}%`;
+  ).style.width = `${Math.min(calorieIntakeProgress, 100)}%`;
   document.getElementById(
     "calorie-intake-progress-percent"
   ).textContent = `${Math.round(calorieIntakeProgress)}%`;
@@ -515,16 +549,14 @@ function updateGoalProgress() {
   document.getElementById("calorie-intake-remaining-goal").textContent =
     calorieIntakeRemaining > 0 ? calorieIntakeRemaining : 0;
 
-  // Calorie Burn progress
   const totalCalories = workouts.reduce((sum, w) => sum + w.calories, 0);
   const calorieProgress =
     goals.calorieGoal > 0 ? (totalCalories / goals.calorieGoal) * 100 : 0;
   const calorieRemaining = goals.calorieGoal - totalCalories;
-  const caloriesGoalProgressEl = document.getElementById(
-    "calories-goal-progress"
-  );
-  if (caloriesGoalProgressEl)
-    caloriesGoalProgressEl.style.width = `${Math.min(calorieProgress, 100)}%`;
+  document.getElementById("calories-goal-progress").style.width = `${Math.min(
+    calorieProgress,
+    100
+  )}%`;
   document.getElementById(
     "calories-progress-percent"
   ).textContent = `${Math.round(calorieProgress)}%`;
@@ -538,14 +570,18 @@ function updateGoalProgress() {
 }
 
 // Initial Load
-try {
-  console.log("Initial load: Checking login status");
-  if (localStorage.getItem("isLoggedIn") === "true") {
-    showMain();
-  } else {
+function initializeApp() {
+  try {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    if (isLoggedIn) {
+      showMain();
+    } else {
+      showLogin();
+    }
+  } catch (e) {
+    console.error("Error during initial load:", e);
     showLogin();
   }
-} catch (e) {
-  console.error("Error during initial load:", e);
-  showLogin();
 }
+
+initializeApp();

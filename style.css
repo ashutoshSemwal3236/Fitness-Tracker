@@ -1,4 +1,20 @@
-/* Custom styles for progress bars and sidebar */
+/* Custom animations and styles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
 .progress-bar {
     height: 8px;
     background-color: #4b5563;
@@ -6,30 +22,24 @@
     overflow: hidden;
 }
 
-.progress-fill {
+.progress-bar div {
     height: 100%;
-    background-color: #60a5fa;
+    background-color: #3b82f6;
     transition: width 0.3s ease-in-out;
 }
 
-.sidebar {
-    transition: transform 0.3s ease-in-out;
+.glass-effect {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-hidden {
-    transform: translateX(-100%);
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 50;
+@media (max-width: 767px) {
+    #sidebar {
+        transform: translateX(-100%);
     }
-}
 
-/* Enhanced gradient for login/signup background */
-.auth-background {
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    #sidebar.active {
+        transform: translateX(0);
+    }
 }
